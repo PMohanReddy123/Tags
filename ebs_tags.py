@@ -2,7 +2,7 @@ import boto3
 client = boto3.client('ec2')
 response = client.create_tags(
     Resources=[
-        'vol-0df2a9b5a5bc9171d'
+        'vol-Id'
     ],
     Tags=[
         {
@@ -27,14 +27,4 @@ response = client.create_tags(
         },
     ],
 )
-# response1 = client.delete_tags(
-#     Resources=[
-#         'vol-045768f9c3f7edb88',
-#     ],
-#     Tags=[
-#         {
-#             'Key': 'Name1',
-#             'Value': 'Mohan',
-#         },
-#     ],
-# )
+
