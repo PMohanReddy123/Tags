@@ -2,7 +2,7 @@ import boto3
 
 client = boto3.client('backup')
 response = client.list_tags(
-    ResourceArn='arn:aws:ec2:eu-west-1::snapshot/snap-0b0eb494ab09862d7',
+    ResourceArn='',
     # NextToken='string',
     # MaxResults=123
 )
