@@ -1,0 +1,148 @@
+How to schedule EC2 Start/Stop based on Tag || Save AWS Cost up to 60%
+stop.py
+import boto3
+import logging
+#setup simple logging for INFO
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+#define the connection
+ec2 = boto3.resource('ec2')
+def lambda_handler(event, context):
+    # Use the filter() method of the instances collection to retrieve
+    # all running EC2 instances.
+
+    filters = [{
+
+            'Name': 'tag:AutoGamepindOff',
+
+            'Values': ['True']
+
+        },
+
+        {
+
+            'Name': 'instance-state-name', 
+
+            'Values': ['running']
+
+        }
+
+    ]
+
+    
+
+    #filter the instances
+
+    instances = ec2.instances.filter(Filters=filters)
+
+
+    #locate all running instances
+
+    RunningInstances = [instance.id for instance in instances]
+
+    
+
+    #print the instances for logging purposes
+
+    #print RunningInstances 
+
+    
+
+    #make sure there are actually instances to shut down. 
+#please change "-gt" with frater than symbol.    
+    if len(RunningInstances) -gt 0:
+
+        #perform the shutdown
+
+        shuttingDown = ec2.instances.filter(InstanceIds=RunningInstances).stop()
+
+        print shuttingDown
+
+    else:
+
+        print "Nothing to see here"
+
+========================
+start.py
+import boto3
+
+import logging
+
+
+#setup simple logging for INFO
+
+logger = logging.getLogger()
+
+logger.setLevel(logging.INFO)
+
+
+#define the connection
+
+ec2 = boto3.resource('ec2')
+
+
+def lambda_handler(event, context):
+
+    # Use the filter() method of the instances collection to retrieve
+
+    # all running EC2 instances.
+
+    filters = [{
+
+            'Name': 'tag:AutoOn',
+
+            'Values': ['True']
+
+        },
+
+        {
+
+            'Name': 'instance-state-name', 
+
+            'Values': ['stopped']
+
+        }
+
+    ]
+
+    
+
+    #filter the instances
+
+    instances = ec2.instances.filter(Filters=filters)
+
+
+    #locate all running instances
+
+    stoppedInstances = [instance.id for instance in instances]
+
+    
+
+    #print the instances for logging purposes
+
+    #print stoppedInstances 
+
+    
+
+    #make sure there are actually instances to Start up. 
+#please change "-gt" with frater than symbol.   
+    if len(stoppedInstances) -gt 0:
+
+        #perform the start
+
+        startingUp = ec2.instances.filter(InstanceIds=stoppedInstances).start()
+
+        print startingUp
+
+    else:
+
+        print "Nothing to see here"
+============
+
+cron examples 
+0 10 * * ? *             Run at 10:00 am (UTC) every day
+
+
+0 18 ? * MON-FRI *       Run at 6:00 pm (UTC) every Monday through Friday
+
+0/5 8-17 ? * MON-FRI *   Run every 5 minutes Monday through Friday between 8:00 am and 5:55 pm (UTC)
