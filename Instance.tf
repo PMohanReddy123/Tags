@@ -34,7 +34,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.my_vpc.id}"
 
   tags = {
-    Name        = "JavaHomeIGW"
+    Name        = "IGW"
     Environment = "${terraform.workspace}"
   }
 }
@@ -48,7 +48,7 @@ resource "aws_route_table" "pub_rt" {
   }
 
   tags = {
-    Name        = "JavaHomePubRT"
+    Name        = "PubRT"
   }
 }
 
